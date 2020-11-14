@@ -21,13 +21,6 @@ functions:
           path: /hello
           method: get # the type of REST request to access GET/POST/PUT/DELETE
           cors: true # this allows all websites to access it, removing all restrictions
-  employee:
-    handler: myMainFile.getEmployee
-    events:
-      - http:
-          path: /employee
-          method: get
-          cors: true
   createMovie:
     handler: myMainFile.createMovie
     events:

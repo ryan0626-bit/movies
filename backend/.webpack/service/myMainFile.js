@@ -3,52 +3,6 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./dbMethods.js":
-/*!**********************!*\
-  !*** ./dbMethods.js ***!
-  \**********************/
-/*! namespace exports */
-/*! export getEmployeeDb [provided] [no usage info] [missing usage info prevents renaming] */
-/*! export getEmployeesDb [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getEmployeeDb": () => /* binding */ getEmployeeDb,
-/* harmony export */   "getEmployeesDb": () => /* binding */ getEmployeesDb
-/* harmony export */ });
-/* harmony import */ var faker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! faker */ "faker");
-/* harmony import */ var faker__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(faker__WEBPACK_IMPORTED_MODULE_0__);
-;
-const getEmployeeDb = id => {
-  let employee = {
-    id: id,
-    firstName: faker__WEBPACK_IMPORTED_MODULE_0___default().name.firstName(),
-    lastName: faker__WEBPACK_IMPORTED_MODULE_0___default().name.lastName(),
-    jobTitle: faker__WEBPACK_IMPORTED_MODULE_0___default().name.jobTitle(),
-    phoneNumber: faker__WEBPACK_IMPORTED_MODULE_0___default().phone.phoneNumber(),
-    gender: faker__WEBPACK_IMPORTED_MODULE_0___default().name.gender(),
-    company: faker__WEBPACK_IMPORTED_MODULE_0___default().company.companyName(),
-    state: faker__WEBPACK_IMPORTED_MODULE_0___default().address.state(),
-    city: faker__WEBPACK_IMPORTED_MODULE_0___default().address.city(),
-    address: faker__WEBPACK_IMPORTED_MODULE_0___default().address.streetAddress(),
-    about: faker__WEBPACK_IMPORTED_MODULE_0___default().lorem.paragraph()
-  };
-  return employee;
-};
-const getEmployeesDb = () => {
-  let employees = [getEmployee("5")];
-  employees.push(getEmployee("4"));
-  employees.push(getEmployee("6"));
-  employees.push(getEmployee("9"));
-  employees.push(getEmployee("1"));
-  return employees;
-};
-
-/***/ }),
-
 /***/ "./helpers.js":
 /*!********************!*\
   !*** ./helpers.js ***!
@@ -82,24 +36,36 @@ const response = data => {
   \***********************/
 /*! namespace exports */
 /*! export createMovie [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
-/*! export getEmployee [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
 /*! export getMovie [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
 /*! export hello [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
 /*! other exports [not provided] [maybe used in myMainFile (runtime-defined)] */
-/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "hello": () => /* binding */ hello,
-/* harmony export */   "getEmployee": () => /* binding */ getEmployee,
 /* harmony export */   "createMovie": () => /* binding */ createMovie,
 /* harmony export */   "getMovie": () => /* binding */ getMovie
 /* harmony export */ });
 /* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers */ "./helpers.js");
-/* harmony import */ var _dbMethods__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dbMethods */ "./dbMethods.js");
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! uuid */ "uuid");
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(uuid__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var dynamoose__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! dynamoose */ "dynamoose");
+/* harmony import */ var dynamoose__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(dynamoose__WEBPACK_IMPORTED_MODULE_2__);
 ;
 
+
+const MovieSchema = new (dynamoose__WEBPACK_IMPORTED_MODULE_2___default().Schema)({
+  id: {
+    hashKey: true,
+    type: String,
+    default: () => (0,uuid__WEBPACK_IMPORTED_MODULE_1__.v4)()
+  },
+  username: String,
+  movie: String
+});
+const MovieModel = dynamoose__WEBPACK_IMPORTED_MODULE_2___default().model("movies", MovieSchema);
 const hello = async ({
   body,
   queryStringParameters
@@ -110,26 +76,22 @@ const hello = async ({
   };
   return (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.response)(data);
 };
-const getEmployee = async ({
-  body,
-  queryStringParameters
-}) => {
-  const id = queryStringParameters.id;
-  let employee = (0,_dbMethods__WEBPACK_IMPORTED_MODULE_1__.getEmployeeDb)(id);
-  return (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.response)(employee);
-};
 const createMovie = async ({
   body,
   queryStringParameters
 }) => {
-  console.log(body); // WHEN body first comes in it will be a string
+  // WHEN body first comes in it will be a string
   // in order to convert that string into an object
   // you haave to do JSON.parse(body)
-
   let payload = JSON.parse(body);
+  let newMovie = new MovieModel({
+    username: payload.username,
+    movie: payload.movie
+  });
+  await newMovie.save();
   return (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.response)({
     greatJob: true,
-    payload
+    newMovie
   });
 };
 const getMovie = async ({
@@ -147,17 +109,31 @@ const getMovie = async ({
 
 /***/ }),
 
-/***/ "faker":
-/*!************************!*\
-  !*** external "faker" ***!
-  \************************/
+/***/ "dynamoose":
+/*!****************************!*\
+  !*** external "dynamoose" ***!
+  \****************************/
 /*! dynamic exports */
 /*! export __esModule [maybe provided (runtime-defined)] [no usage info] [provision prevents renaming (no use info)] */
 /*! other exports [maybe provided (runtime-defined)] [no usage info] */
 /*! runtime requirements: module */
 /***/ ((module) => {
 
-module.exports = require("faker");;
+module.exports = require("dynamoose");;
+
+/***/ }),
+
+/***/ "uuid":
+/*!***********************!*\
+  !*** external "uuid" ***!
+  \***********************/
+/*! dynamic exports */
+/*! export __esModule [maybe provided (runtime-defined)] [no usage info] [provision prevents renaming (no use info)] */
+/*! other exports [maybe provided (runtime-defined)] [no usage info] */
+/*! runtime requirements: module */
+/***/ ((module) => {
+
+module.exports = require("uuid");;
 
 /***/ })
 
