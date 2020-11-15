@@ -14,26 +14,33 @@ provider:
         - "*"
       Resource: "*"
 functions:
-  hello: #the name that aws will save this as for our own future reference
-    handler: myMainFile.hello #defines where the location is file.method
+  createMovie: #the name that aws will save this as for our own future reference
+    handler: myMainFile.createMovie #defines where the location is file.method
     events: #they list of different types of events to access this method
-      - http: #REST requests will be able to access this
-          path: /hello
-          method: get # the type of REST request to access GET/POST/PUT/DELETE
+      - http: #REST (GET/POST/PUT/DELETE) requests will be able to access this
+          path: /createmovie #the path on the urlbase so its http://baseurl.com/path
+          method: post # the type of REST request to access GET/POST/PUT/DELETE
           cors: true # this allows all websites to access it, removing all restrictions
-  createMovie:
-    handler: myMainFile.createMovie
-    events:
-      - http:
-          path: /createmovie
-          method: post
-          cors: true
   getMovie:
     handler: myMainFile.getMovie
     events:
       - http:
           path: /getmovie
           method: get
+          cors: true
+  signUp:
+    handler: myMainFile.signUp
+    events:
+      - http:
+          path: /signup
+          method: post
+          cors: true
+  signIn:
+    handler: myMainFile.signIn
+    events:
+      - http:
+          path: /signin
+          method: post
           cors: true
 # REST NOTES
 # GET - Yyou cannot add data to the body, only params in the url, this is made for getting an item from the DB

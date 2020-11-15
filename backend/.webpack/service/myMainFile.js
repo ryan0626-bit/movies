@@ -37,14 +37,16 @@ const response = data => {
 /*! namespace exports */
 /*! export createMovie [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
 /*! export getMovie [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
-/*! export hello [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
+/*! export signIn [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
+/*! export signUp [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
 /*! other exports [not provided] [maybe used in myMainFile (runtime-defined)] */
 /*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "hello": () => /* binding */ hello,
+/* harmony export */   "signUp": () => /* binding */ signUp,
+/* harmony export */   "signIn": () => /* binding */ signIn,
 /* harmony export */   "createMovie": () => /* binding */ createMovie,
 /* harmony export */   "getMovie": () => /* binding */ getMovie
 /* harmony export */ });
@@ -65,24 +67,74 @@ const MovieSchema = new (dynamoose__WEBPACK_IMPORTED_MODULE_2___default().Schema
   username: String,
   movie: String
 });
-const MovieModel = dynamoose__WEBPACK_IMPORTED_MODULE_2___default().model("movies", MovieSchema);
-const hello = async ({
+const UserSchema = new (dynamoose__WEBPACK_IMPORTED_MODULE_2___default().Schema)({
+  email: {
+    hashKey: true,
+    type: String
+  },
+  password: String
+});
+const MovieModel = dynamoose__WEBPACK_IMPORTED_MODULE_2___default().model("movieapp-movies", MovieSchema);
+const UserModel = dynamoose__WEBPACK_IMPORTED_MODULE_2___default().model("movieapp-users", UserSchema);
+const signUp = async ({
   body,
   queryStringParameters
 }) => {
-  console.log("you have hit the lambda");
-  let data = {
-    ryan: "understands code"
-  };
-  return (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.response)(data);
+  let payload = JSON.parse(body);
+  let user = await UserModel.get({
+    email: payload.email
+  }); // user.email, user.password if it exists
+
+  if (user) {
+    //the user already exists do not create a new one
+    return (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.response)({
+      success: false,
+      user,
+      message: "user already exists"
+    });
+  } else {
+    //the user === null and therefore does not exits so we need to create that user in our tables
+    let newUser = new UserModel({
+      email: payload.email,
+      password: payload.password
+    });
+    await newUser.save();
+    return (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.response)({
+      newUser,
+      success: true
+    });
+  }
+};
+const signIn = async ({
+  body,
+  queryStringParameters
+}) => {
+  let payload = JSON.parse(body);
+  let user = await UserModel.get({
+    email: payload.email
+  });
+
+  if (!user) {
+    return (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.response)({
+      success: false,
+      message: "user does not exist"
+    });
+  } else if (user.password === payload.password) {
+    return (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.response)({
+      success: true
+    });
+  } else {
+    return (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.response)({
+      success: false,
+      messaage: "incorrect password"
+    });
+  }
 };
 const createMovie = async ({
   body,
   queryStringParameters
 }) => {
-  // WHEN body first comes in it will be a string
-  // in order to convert that string into an object
-  // you haave to do JSON.parse(body)
+  // WHEN body first comes in it will be a string  in order to convert that string into an object you haave to do JSON.parse(body)
   let payload = JSON.parse(body);
   let newMovie = new MovieModel({
     username: payload.username,
