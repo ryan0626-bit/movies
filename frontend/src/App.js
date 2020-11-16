@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import Auth from "./Auth";
+import Home from "./Home";
 
 function App() {
   const [email, setEmail] = useState("");
   const [signedIn, setSignedIn] = useState(false);
-
   return !signedIn ? (
-    <Auth setSignedIn={setSignedIn} email={email} setEmail={setEmail} />
+    <Auth email={email} setSignedIn={setSignedIn} setEmail={setEmail} />
   ) : (
-    <div>Hello</div>
+    <Home email={email} />
   );
 }
 

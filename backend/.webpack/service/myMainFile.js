@@ -58,6 +58,20 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
+const FoodSchema = new (dynamoose__WEBPACK_IMPORTED_MODULE_2___default().Schema)({
+  email: {
+    hashKey: true,
+    type: String,
+    default: () => (0,uuid__WEBPACK_IMPORTED_MODULE_1__.v4)()
+  },
+  dateEntry: {
+    rangeKey: true,
+    type: String,
+    default: () => Date.now().toString()
+  },
+  food: String,
+  mealType: String
+});
 const MovieSchema = new (dynamoose__WEBPACK_IMPORTED_MODULE_2___default().Schema)({
   id: {
     hashKey: true,

@@ -2,6 +2,21 @@ import { response } from "./helpers";
 import { v4 as uuid } from "uuid";
 import dynamoose from "dynamoose";
 
+const FoodSchema = new dynamoose.Schema({
+  email: {
+    hashKey: true,
+    type: String,
+    default: () => uuid(),
+  },
+  dateEntry: {
+    rangeKey: true,
+    type: String,
+    default: () => Date.now().toString(),
+  },
+  food: String,
+  mealType: String,
+});
+
 const MovieSchema = new dynamoose.Schema({
   id: {
     hashKey: true,
