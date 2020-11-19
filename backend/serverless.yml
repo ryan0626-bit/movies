@@ -3,7 +3,7 @@ frameworkVersion: "2"
 custom:
   webpack:
     webpackConfig: "./webpack.config.js"
-    includeModels: true
+    includeModules: true
 provider:
   name: aws
   runtime: nodejs12.x
@@ -11,7 +11,11 @@ provider:
   iamRoleStatements:
     - Effect: "Allow"
       Action:
-        - "*"
+        - "dynamodb:*"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "sts:*"
       Resource: "*"
 functions:
   addFood: #the name that aws will save this as for our own future reference

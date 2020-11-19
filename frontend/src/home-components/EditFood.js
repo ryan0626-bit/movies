@@ -4,6 +4,7 @@ import EditIcon from "@material-ui/icons/Create";
 import DoneIcon from "@material-ui/icons/Done";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import {API} from '../config'
 
 const EditFood = (props) => {
   const { email, dateEntry, currentFood, getMeals } = props;
@@ -17,7 +18,7 @@ const EditFood = (props) => {
       email,
     };
     setIsEditing(false);
-    let endpoint = `http://127.0.0.1:5001/dev/editfood`;
+    let endpoint = `${API}/editfood`;
     let response = await axios.put(endpoint, payload);
     await getMeals();
   };

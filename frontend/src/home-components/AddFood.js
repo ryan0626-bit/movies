@@ -4,6 +4,7 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Select from "@material-ui/core/Select";
 import Form from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
+import {API} from '../config'
 import axios from "axios";
 export default function Home(props) {
   const { email, getMeals } = props;
@@ -12,7 +13,7 @@ export default function Home(props) {
   const [mealType, setMealType] = useState("breakfast");
 
   const addFood = async () => {
-    let endpoint = "http://127.0.0.1:5001/dev/addfood";
+    let endpoint = `${API}/addfood`;
     let payload = {
       food,
       email,

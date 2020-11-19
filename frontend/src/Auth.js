@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
+import {API} from './config'
 
 export default function Auth(props) {
   const [password, setPassword] = useState("");
@@ -10,7 +11,7 @@ export default function Auth(props) {
   const { email, setEmail, setSignedIn } = props;
 
   const signUp = async () => {
-    let endpoint = "http://127.0.0.1:5001/dev/signup";
+    let endpoint = `${API}/signup`;
     let payload = {
       email,
       password: password,
@@ -21,7 +22,7 @@ export default function Auth(props) {
   };
 
   const signIn = async () => {
-    let endpoint = "http://127.0.0.1:5001/dev/signin";
+    let endpoint = `${API}/signin`;
     let payload = {
       email: email,
       password: password,

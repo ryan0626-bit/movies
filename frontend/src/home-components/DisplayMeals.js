@@ -7,19 +7,20 @@ import React, { useEffect, useState } from "react";
 import EditFood from "./EditFood";
 import EditMealType from "./EditMealType";
 import AddFood from "./AddFood";
+import {API} from '../config'
 
 const DisplayMeals = (props) => {
   const { email } = props;
   const [foods, setFoods] = useState([]);
 
   const getMeals = async () => {
-    let endpoint = `http://127.0.0.1:5001/dev/getmeals?email=${email}`;
+    let endpoint = `${API}/getmeals?email=${email}`;
     let response = await axios.get(endpoint);
     setFoods(response.data.foods);
   };
 
   const deleteMeal = async (dateEntry) => {
-    let endpoint = `http://127.0.0.1:5001/dev/deletemeals?email=${email}&dateEntry=${dateEntry}`;
+    let endpoint = `${API}/deletemeals?email=${email}&dateEntry=${dateEntry}`;
     let response = await axios.delete(endpoint);
     await getMeals();
   };

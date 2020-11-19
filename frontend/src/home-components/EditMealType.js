@@ -4,6 +4,7 @@ import IconButton from "@material-ui/core/IconButton";
 import TextField from "@material-ui/core/TextField";
 import DoneIcon from "@material-ui/icons/Done";
 import axios from "axios";
+import {API} from '../config'
 
 const EditMealType = (props) => {
   const { dateEntry, currentMealType, email, getMeals } = props;
@@ -17,7 +18,7 @@ const EditMealType = (props) => {
       email,
     };
     setIsEditing(false);
-    let endpoint = `http://127.0.0.1:5001/dev/updatemealtype`;
+    let endpoint = `${API}/updatemealtype`;
     let response = await axios.put(endpoint, payload);
     await getMeals();
   };
