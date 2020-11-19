@@ -30,72 +30,96 @@ const response = data => {
 
 /***/ }),
 
-/***/ "./myMainFile.js":
-/*!***********************!*\
-  !*** ./myMainFile.js ***!
-  \***********************/
+/***/ "./models.js":
+/*!*******************!*\
+  !*** ./models.js ***!
+  \*******************/
 /*! namespace exports */
-/*! export createMovie [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
-/*! export getMovie [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
-/*! export signIn [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
-/*! export signUp [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
-/*! other exports [not provided] [maybe used in myMainFile (runtime-defined)] */
+/*! export FoodModel [provided] [no usage info] [missing usage info prevents renaming] */
+/*! export UserModel [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
 /*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "signUp": () => /* binding */ signUp,
-/* harmony export */   "signIn": () => /* binding */ signIn,
-/* harmony export */   "createMovie": () => /* binding */ createMovie,
-/* harmony export */   "getMovie": () => /* binding */ getMovie
+/* harmony export */   "FoodModel": () => /* binding */ FoodModel,
+/* harmony export */   "UserModel": () => /* binding */ UserModel
 /* harmony export */ });
-/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers */ "./helpers.js");
-/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! uuid */ "uuid");
-/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(uuid__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var dynamoose__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! dynamoose */ "dynamoose");
-/* harmony import */ var dynamoose__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(dynamoose__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! uuid */ "uuid");
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(uuid__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var dynamoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dynamoose */ "dynamoose");
+/* harmony import */ var dynamoose__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(dynamoose__WEBPACK_IMPORTED_MODULE_1__);
 ;
 
-
-const FoodSchema = new (dynamoose__WEBPACK_IMPORTED_MODULE_2___default().Schema)({
+const FoodSchema = new (dynamoose__WEBPACK_IMPORTED_MODULE_1___default().Schema)({
   email: {
     hashKey: true,
-    type: String,
-    default: () => (0,uuid__WEBPACK_IMPORTED_MODULE_1__.v4)()
+    required: true,
+    type: String
   },
   dateEntry: {
     rangeKey: true,
     type: String,
-    default: () => Date.now().toString()
+    required: true
   },
-  food: String,
-  mealType: String
-});
-const MovieSchema = new (dynamoose__WEBPACK_IMPORTED_MODULE_2___default().Schema)({
-  id: {
-    hashKey: true,
+  food: {
     type: String,
-    default: () => (0,uuid__WEBPACK_IMPORTED_MODULE_1__.v4)()
+    required: true
   },
-  username: String,
-  movie: String
+  mealType: {
+    type: String,
+    required: true
+  }
 });
-const UserSchema = new (dynamoose__WEBPACK_IMPORTED_MODULE_2___default().Schema)({
+const UserSchema = new (dynamoose__WEBPACK_IMPORTED_MODULE_1___default().Schema)({
   email: {
     hashKey: true,
     type: String
   },
   password: String
 });
-const MovieModel = dynamoose__WEBPACK_IMPORTED_MODULE_2___default().model("movieapp-movies", MovieSchema);
-const UserModel = dynamoose__WEBPACK_IMPORTED_MODULE_2___default().model("movieapp-users", UserSchema);
+const FoodModel = dynamoose__WEBPACK_IMPORTED_MODULE_1___default().model("foodapp-food", FoodSchema);
+const UserModel = dynamoose__WEBPACK_IMPORTED_MODULE_1___default().model("foodapp-users", UserSchema);
+
+/***/ }),
+
+/***/ "./myMainFile.js":
+/*!***********************!*\
+  !*** ./myMainFile.js ***!
+  \***********************/
+/*! namespace exports */
+/*! export addFood [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
+/*! export deleteMeals [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
+/*! export food [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
+/*! export getMeals [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
+/*! export signIn [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
+/*! export signUp [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
+/*! export updateMealType [provided] [maybe used in myMainFile (runtime-defined)] [usage prevents renaming] */
+/*! other exports [not provided] [maybe used in myMainFile (runtime-defined)] */
+/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "signUp": () => /* binding */ signUp,
+/* harmony export */   "signIn": () => /* binding */ signIn,
+/* harmony export */   "addFood": () => /* binding */ addFood,
+/* harmony export */   "getMeals": () => /* binding */ getMeals,
+/* harmony export */   "deleteMeals": () => /* binding */ deleteMeals,
+/* harmony export */   "updateMealType": () => /* binding */ updateMealType,
+/* harmony export */   "food": () => /* binding */ food
+/* harmony export */ });
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers */ "./helpers.js");
+/* harmony import */ var _models__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./models */ "./models.js");
+;
+
 const signUp = async ({
   body,
   queryStringParameters
 }) => {
   let payload = JSON.parse(body);
-  let user = await UserModel.get({
+  let user = await _models__WEBPACK_IMPORTED_MODULE_1__.UserModel.get({
     email: payload.email
   }); // user.email, user.password if it exists
 
@@ -108,7 +132,7 @@ const signUp = async ({
     });
   } else {
     //the user === null and therefore does not exits so we need to create that user in our tables
-    let newUser = new UserModel({
+    let newUser = new _models__WEBPACK_IMPORTED_MODULE_1__.UserModel({
       email: payload.email,
       password: payload.password
     });
@@ -124,7 +148,7 @@ const signIn = async ({
   queryStringParameters
 }) => {
   let payload = JSON.parse(body);
-  let user = await UserModel.get({
+  let user = await _models__WEBPACK_IMPORTED_MODULE_1__.UserModel.get({
     email: payload.email
   });
 
@@ -144,33 +168,99 @@ const signIn = async ({
     });
   }
 };
-const createMovie = async ({
+const addFood = async ({
   body,
   queryStringParameters
 }) => {
   // WHEN body first comes in it will be a string  in order to convert that string into an object you haave to do JSON.parse(body)
-  let payload = JSON.parse(body);
-  let newMovie = new MovieModel({
-    username: payload.username,
-    movie: payload.movie
+  let {
+    email,
+    mealType,
+    food
+  } = JSON.parse(body);
+  let newFood = new _models__WEBPACK_IMPORTED_MODULE_1__.FoodModel({
+    email,
+    dateEntry: Date.now().toString(),
+    mealType,
+    food
   });
-  await newMovie.save();
+  await newFood.save();
   return (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.response)({
-    greatJob: true,
-    newMovie
+    success: true,
+    newFood
   });
 };
-const getMovie = async ({
+const getMeals = async ({
   body,
   queryStringParameters
 }) => {
-  console.log(queryStringParameters, body);
+  const {
+    email
+  } = queryStringParameters;
+  let foods = await _models__WEBPACK_IMPORTED_MODULE_1__.FoodModel.query({
+    email
+  }).exec();
   return (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.response)({
-    greatJob: true,
-    queryStringParameters,
-    body
+    success: true,
+    foods
   });
-}; //REST - post, functionName = createMovie, path: /createmovie
+};
+const deleteMeals = async ({
+  body,
+  queryStringParameters
+}) => {
+  const {
+    email,
+    dateEntry
+  } = queryStringParameters;
+  await _models__WEBPACK_IMPORTED_MODULE_1__.FoodModel.delete({
+    email,
+    dateEntry
+  });
+  return (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.response)({
+    success: true
+  });
+};
+const updateMealType = async ({
+  body,
+  queryStringParameters
+}) => {
+  const {
+    dateEntry,
+    mealType,
+    email
+  } = JSON.parse(body);
+  await _models__WEBPACK_IMPORTED_MODULE_1__.FoodModel.update({
+    email,
+    dateEntry
+  }, {
+    mealType
+  });
+  return (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.response)({
+    success: true
+  });
+};
+const food = async ({
+  body,
+  queryStringParameters
+}) => {
+  const {
+    dateEntry,
+    food,
+    email
+  } = JSON.parse(body);
+  await _models__WEBPACK_IMPORTED_MODULE_1__.FoodModel.update({
+    email,
+    dateEntry
+  }, {
+    food
+  });
+  return (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.response)({
+    success: true
+  });
+}; //await FoodModel.update({email, dateEntry},{food})
+//await FoodModel.update({email, dateEntry}, {mealType})
+//REST - post, functionName = createMovie, path: /createmovie
 // serverless offline start --host 127.0.0.1 --http-port 5001
 
 /***/ }),

@@ -12,7 +12,7 @@ export default function Auth(props) {
   const signUp = async () => {
     let endpoint = "http://127.0.0.1:5001/dev/signup";
     let payload = {
-      email: email,
+      email,
       password: password,
     };
 

@@ -1,42 +1,5 @@
 import { response } from "./helpers";
-import { v4 as uuid } from "uuid";
-import dynamoose from "dynamoose";
-
-const FoodSchema = new dynamoose.Schema({
-  email: {
-    hashKey: true,
-    type: String,
-    default: () => uuid(),
-  },
-  dateEntry: {
-    rangeKey: true,
-    type: String,
-    default: () => Date.now().toString(),
-  },
-  food: String,
-  mealType: String,
-});
-
-const MovieSchema = new dynamoose.Schema({
-  id: {
-    hashKey: true,
-    type: String,
-    default: () => uuid(),
-  },
-  username: String,
-  movie: String,
-});
-const UserSchema = new dynamoose.Schema({
-  email: {
-    hashKey: true,
-    type: String,
-  },
-  password: String,
-});
-
-const MovieModel = dynamoose.model("movieapp-movies", MovieSchema);
-
-const UserModel = dynamoose.model("movieapp-users", UserSchema);
+import { FoodModel, UserModel } from "./models";
 
 export const signUp = async ({ body, queryStringParameters }) => {
   let payload = JSON.parse(body);
@@ -67,22 +30,44 @@ export const signIn = async ({ body, queryStringParameters }) => {
   }
 };
 
-export const createMovie = async ({ body, queryStringParameters }) => {
+export const addFood = async ({ body, queryStringParameters }) => {
   // WHEN body first comes in it will be a string  in order to convert that string into an object you haave to do JSON.parse(body)
-  let payload = JSON.parse(body);
-  let newMovie = new MovieModel({
-    username: payload.username,
-    movie: payload.movie,
+  let { email, mealType, food } = JSON.parse(body);
+  let newFood = new FoodModel({
+    email,
+    dateEntry: Date.now().toString(),
+    mealType,
+    food,
   });
-  await newMovie.save();
+  await newFood.save();
 
-  return response({ greatJob: true, newMovie });
+  return response({ success: true, newFood });
 };
 
-export const getMovie = async ({ body, queryStringParameters }) => {
-  console.log(queryStringParameters, body);
-  return response({ greatJob: true, queryStringParameters, body });
+export const getMeals = async ({ body, queryStringParameters }) => {
+  const { email } = queryStringParameters;
+  let foods = await FoodModel.query({ email }).exec();
+  return response({ success: true, foods });
 };
+
+export const deleteMeals = async ({ body, queryStringParameters }) => {
+  const { email, dateEntry } = queryStringParameters;
+  await FoodModel.delete({ email, dateEntry });
+  return response({ success: true });
+};
+
+export const updateMealType = async ({ body, queryStringParameters }) => {
+  const { dateEntry, mealType, email } = JSON.parse(body);
+  await FoodModel.update({ email, dateEntry }, { mealType });
+  return response({ success: true });
+};
+export const food = async ({ body, queryStringParameters }) => {
+  const { dateEntry, food, email } = JSON.parse(body);
+  await FoodModel.update({ email, dateEntry }, { food });
+  return response({ success: true });
+};
+//await FoodModel.update({email, dateEntry},{food})
+//await FoodModel.update({email, dateEntry}, {mealType})
 
 //REST - post, functionName = createMovie, path: /createmovie
 // serverless offline start --host 127.0.0.1 --http-port 5001

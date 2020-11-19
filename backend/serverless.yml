@@ -21,11 +21,11 @@ functions:
           path: /addfood #the path on the urlbase so its http://baseurl.com/path
           method: post # the type of REST request to access GET/POST/PUT/DELETE
           cors: true # this allows all websites to access it, removing all restrictions
-  getMovie:
-    handler: myMainFile.getMovie
+  getMeals:
+    handler: myMainFile.getMeals
     events:
       - http:
-          path: /getmovie
+          path: /getmeals
           method: get
           cors: true
   signUp:
@@ -41,6 +41,27 @@ functions:
       - http:
           path: /signin
           method: post
+          cors: true
+  deleteMeals:
+    handler: myMainFile.deleteMeals
+    events:
+      - http:
+          path: /deletemeals
+          method: delete
+          cors: true
+  updateMealType:
+    handler: myMainFile.updateMealType
+    events:
+      - http:
+          path: /updatemealtype
+          method: put
+          cors: true
+  food:
+    handler: myMainFile.food
+    events:
+      - http:
+          path: /editfood
+          method: put
           cors: true
 # REST NOTES
 # GET - Yyou cannot add data to the body, only params in the url, this is made for getting an item from the DB
